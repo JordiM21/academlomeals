@@ -8,6 +8,8 @@ const getAllRestaurants = async (req, res) => {
 			where: { status: "active" },
 			include: {
 				model: Review,
+				required: false,
+				where: { status: "active" },
 			},
 		});
 

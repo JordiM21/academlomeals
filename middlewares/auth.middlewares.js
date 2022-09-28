@@ -20,7 +20,7 @@ const protectSession = async (req, res, next) => {
 			//entramos al segundo if y revisamos si hay token o no
 			return res.status(403).json({
 				status: "error",
-				message: "invalida session",
+				message: "invalid session",
 			});
 		}
 		//regresa el token decodificado y verifica si el token YA EXPIRO
@@ -59,4 +59,18 @@ const protectUsersAccount = async (req, res, next) => {
 	//grant access
 };
 
-module.exports = { protectSession, protectUsersAccount };
+const userIsAdmin = async (req, res, next) => {
+	const { sessionUser } = req;
+
+	if (sessionUser.role == "admin") {
+		return res.status(403).json({
+			status: "error",
+			message: "you are not the owner of this account",
+		});
+	}
+
+	next();
+	//grant access
+};
+
+module.exports = { protectSession, protectUsersAccount, userIsAdmin };

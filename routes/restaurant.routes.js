@@ -14,9 +14,13 @@ const {
 
 // Middlewares
 const {
-	createPostValidators,
+	createRestaurantValidator,
 } = require("../middlewares/validators.middlewares");
-const { protectSession } = require("../middlewares/auth.middlewares");
+const {
+	protectSession,
+	userIsAdmin,
+	protectUsersAccount,
+} = require("../middlewares/auth.middlewares");
 
 const RestRouter = express.Router();
 
@@ -26,21 +30,21 @@ RestRouter.get("/:id", getRestaurantById);
 
 RestRouter.use(protectSession);
 
-RestRouter.post("/", createRestaurant);
+RestRouter.post("/", createRestaurantValidator, createRestaurant);
 
 //solo el role: admin
-RestRouter.patch("/:id", updateRest);
+RestRouter.patch("/:id", userIsAdmin, updateRest);
 
 //solo el role: admin
-RestRouter.delete("/:id", deleteRestaurant);
+RestRouter.delete("/:id", userIsAdmin, deleteRestaurant);
 
 //RESTAURANT'S REVIEWS
 RestRouter.post("/reviews/:restaurantId", createReview);
 
 //solo el autor
-RestRouter.patch("/reviews/:id", updateReview);
+RestRouter.patch("/reviews/:id", protectUsersAccount, updateReview);
 
 //solo el autor
-RestRouter.delete("/reviews/:id", deleteReview);
+RestRouter.delete("/reviews/:id", protectUsersAccount, deleteReview);
 
 module.exports = { RestRouter };

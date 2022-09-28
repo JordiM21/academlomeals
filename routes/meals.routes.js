@@ -8,7 +8,14 @@ const {
 	updateMeal,
 	deleteMeal,
 } = require("../controllers/meal.controller");
-const { protectSession } = require("../middlewares/auth.middlewares");
+const {
+	protectSession,
+	userIsAdmin,
+} = require("../middlewares/auth.middlewares");
+
+const {
+	createMealValidator,
+} = require("../middlewares/validators.middlewares");
 
 // Middlewares
 
@@ -20,12 +27,12 @@ mealRouter.get("/:id", getMealById);
 
 mealRouter.use(protectSession);
 
-mealRouter.post("/:id", createMeal);
+mealRouter.post("/:id", createMealValidator, createMeal);
 
 //only the admin
-mealRouter.patch("/:id", updateMeal);
+mealRouter.patch("/:id", userIsAdmin, updateMeal);
 
 //only the admin
-mealRouter.delete("/:id", deleteMeal);
+mealRouter.delete("/:id", userIsAdmin, deleteMeal);
 
 module.exports = { mealRouter };

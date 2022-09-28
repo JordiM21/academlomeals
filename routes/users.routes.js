@@ -22,6 +22,7 @@ const {
 } = require("../middlewares/auth.middlewares");
 
 const usersRouter = express.Router();
+
 usersRouter.post("/signup", createUserValidators, createUser);
 
 usersRouter.post("/login", login);

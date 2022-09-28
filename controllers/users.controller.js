@@ -5,15 +5,19 @@ const dotenv = require("dotenv");
 // Models
 const { User } = require("../models/user.model");
 const { Order } = require("../models/order.model");
+const { Restaurant } = require("../models/restaurant.model");
 
 dotenv.config({ path: "./config.env" });
 
-//como obtengo las orders de un usario?
 const getAllOrders = async (req, res) => {
 	try {
 		const orders = await Order.findAll({
 			attributes: { exclude: ["password"] },
 			where: { status: "active", userId: req.sessionUser.id },
+			include: {
+				model: Restaurant,
+				required: false,
+			},
 		});
 
 		res.status(200).json({

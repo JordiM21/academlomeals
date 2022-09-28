@@ -1,10 +1,15 @@
 // Models
 const { Meal } = require("../models/meal.model");
+const { Restaurant } = require("../models/restaurant.model");
 
 const getAllMeals = async (req, res) => {
 	try {
 		const meals = await Meal.findAll({
 			where: { status: "active" },
+			include: {
+				model: Restaurant,
+				required: false,
+			},
 		});
 
 		res.status(200).json({
@@ -22,7 +27,13 @@ const getMealById = async (req, res) => {
 	try {
 		const { id } = req.params;
 
-		const meal = await Meal.findOne({ where: { id } });
+		const meal = await Meal.findOne({
+			where: { id },
+			include: {
+				model: Restaurant,
+				required: false,
+			},
+		});
 
 		// If user doesn't exist, send error message
 		if (!meal) {

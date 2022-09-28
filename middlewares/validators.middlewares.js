@@ -37,22 +37,33 @@ const createUserValidators = [
 	checkValidations,
 ];
 
-const createPostValidators = [
-	body("title")
+const createRestaurantValidator = [
+	body("name")
 		.isString()
 		.withMessage("Title must be a string")
 		.isLength({ min: 3 })
 		.withMessage("Title must be at least 3 characters"),
-	body("content")
+	body("address")
 		.isString()
-		.withMessage("Content must be a string")
+		.withMessage("address must be a string")
 		.isLength({ min: 3 })
-		.withMessage("Content must be at least 3 characters long"),
+		.withMessage("The address must have at least 3 characters"),
+	checkValidations,
+];
+
+const createMealValidator = [
+	body("name")
+		.isString()
+		.withMessage("Name must be a string")
+		.isLength({ min: 3 })
+		.withMessage("Name must be at least 3 characters"),
+	body("price").isNumeric().withMessage("price must be a number"),
 	checkValidations,
 ];
 
 module.exports = {
 	checkValidations,
 	createUserValidators,
-	createPostValidators,
+	createRestaurantValidator,
+	createMealValidator,
 };
